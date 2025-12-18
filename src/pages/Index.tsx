@@ -1,9 +1,32 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Icon from "@/components/ui/icon";
+import { useState, useEffect } from "react";
 
 export default function Index() {
-  const telegramBotUrl = "https://t.me/rvp_urfu_bot";
+  const telegramBotUrl = "https://t.me/rvpurfu317bot";
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const features = [
     {
@@ -101,7 +124,56 @@ export default function Index() {
 
   return (
     <div className="min-h-screen">
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-background py-20 md:py-32">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-background/95 backdrop-blur-md shadow-md' : 'bg-background/80 backdrop-blur-sm'
+      }`}>
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16 md:h-20">
+            <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                <Icon name="GraduationCap" className="text-primary-foreground" size={20} />
+              </div>
+              <span className="text-xl font-bold">RVP-Urfu</span>
+            </div>
+            
+            <nav className="hidden lg:flex items-center space-x-1">
+              <Button variant="ghost" onClick={() => scrollToSection('about')} className="text-sm">
+                О боте
+              </Button>
+              <Button variant="ghost" onClick={() => scrollToSection('problem')} className="text-sm">
+                Проблема
+              </Button>
+              <Button variant="ghost" onClick={() => scrollToSection('features')} className="text-sm">
+                Возможности
+              </Button>
+              <Button variant="ghost" onClick={() => scrollToSection('pricing')} className="text-sm">
+                Тарифы
+              </Button>
+              <Button variant="ghost" onClick={() => scrollToSection('testimonials')} className="text-sm">
+                Отзывы
+              </Button>
+              <Button variant="ghost" onClick={() => scrollToSection('cta')} className="text-sm">
+                Как начать
+              </Button>
+              <Button 
+                className="ml-4"
+                onClick={() => window.open(telegramBotUrl, '_blank')}
+              >
+                <Icon name="Send" className="mr-2" size={16} />
+                Открыть бота
+              </Button>
+            </nav>
+            
+            <Button 
+              className="lg:hidden"
+              onClick={() => window.open(telegramBotUrl, '_blank')}
+            >
+              <Icon name="Send" size={16} />
+            </Button>
+          </div>
+        </div>
+      </header>
+      <section className="relative overflow-hidden bg-gradient-to-b from-primary/5 to-background py-20 md:py-32 pt-32 md:pt-40">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl text-center animate-fade-in">
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
@@ -125,7 +197,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 md:py-24">
+      <section id="about" className="py-20 md:py-24">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
@@ -146,7 +218,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 md:py-24 bg-muted/30">
+      <section id="problem" className="py-20 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-4xl">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">
@@ -172,7 +244,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 md:py-24">
+      <section id="features" className="py-20 md:py-24">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
             Основные возможности
@@ -268,7 +340,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 md:py-24 bg-muted/30">
+      <section id="pricing" className="py-20 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
             Тарифы
@@ -359,7 +431,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 md:py-24 bg-muted/30">
+      <section id="testimonials" className="py-20 md:py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
             Отзывы студентов
@@ -385,7 +457,7 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="py-20 md:py-32 bg-gradient-to-t from-primary/5 to-background">
+      <section id="cta" className="py-20 md:py-32 bg-gradient-to-t from-primary/5 to-background">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -410,9 +482,107 @@ export default function Index() {
         </div>
       </section>
 
-      <footer className="py-8 border-t">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p>RVP-Urfu — помощник для иностранных студентов УрФУ по оформлению РВП</p>
+      <footer className="bg-foreground text-background py-12 md:py-16">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+                  <Icon name="GraduationCap" className="text-primary-foreground" size={20} />
+                </div>
+                <span className="text-xl font-bold">RVP-Urfu</span>
+              </div>
+              <p className="text-sm text-background/80 mb-2">
+                Помощник по РВП для иностранных студентов УрФУ
+              </p>
+              <p className="text-xs text-background/60">
+                Разработано для студентов УрФУ
+              </p>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Навигация</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <button onClick={() => scrollToSection('about')} className="text-background/80 hover:text-background transition-colors">
+                    О боте
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('problem')} className="text-background/80 hover:text-background transition-colors">
+                    Проблема
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('features')} className="text-background/80 hover:text-background transition-colors">
+                    Возможности
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('pricing')} className="text-background/80 hover:text-background transition-colors">
+                    Тарифы
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('testimonials')} className="text-background/80 hover:text-background transition-colors">
+                    Отзывы
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Для УрФУ</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <button onClick={() => scrollToSection('about')} className="text-background/80 hover:text-background transition-colors">
+                    Новичкам
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('about')} className="text-background/80 hover:text-background transition-colors">
+                    Продление РВП
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('pricing')} className="text-background/80 hover:text-background transition-colors">
+                    Премиум-сопровождение
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="font-semibold mb-4">Связь</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <a href={telegramBotUrl} target="_blank" rel="noopener noreferrer" className="text-background/80 hover:text-background transition-colors flex items-center gap-2">
+                    <Icon name="Send" size={14} />
+                    @rvpurfu317bot
+                  </a>
+                </li>
+                <li>
+                  <a href="mailto:support@rvpurfu.ru" className="text-background/80 hover:text-background transition-colors">
+                    Контакты
+                  </a>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('cta')} className="text-background/80 hover:text-background transition-colors">
+                    Политика конфиденциальности
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-background/20 pt-8 space-y-2">
+            <p className="text-sm text-center text-background/80">
+              © 2024 RVP-Urfu. Все права защищены.
+            </p>
+            <p className="text-xs text-center text-background/60">
+              Сервис создан для иностранных студентов Уральского федерального университета.
+            </p>
+          </div>
         </div>
       </footer>
     </div>
